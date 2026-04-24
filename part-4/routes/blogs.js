@@ -50,11 +50,16 @@ blogsRouter.post('/', async (request, response, next) => {
 })
 
 blogsRouter.put('/:id', async (request, response, next) => {
+    const userId = typeof request.body.user === 'object' && request.body.user !== null
+        ? request.body.user.id || request.body.user._id
+        : request.body.user
+
     const blog = {
         title: request.body.title,
         author: request.body.author,
         url: request.body.url,
         likes: request.body.likes,
+        user: userId,
     }
 
     try {
