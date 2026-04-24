@@ -1,15 +1,26 @@
 # fullstack-helsinki-university
 
-Monorepo for Full Stack Open course activities.
+Monorepo de ejercicios del curso Full Stack Open.
 
-## Repository Organization
+## Parte 3 - Phonebook Backend
 
-All exercises are organized in folders and kept in the default branch (`main`).
-This repository does not use separate branches per course part.
+Aplicacion online:
 
-Current structure:
+- URL: PENDIENTE_DEPLEGAR
 
-- `activities/part-0b/`
-  - `0.4_New-note-diagram/`
-  - `0.5_Single-page-app-diagram/`
-  - `0.6_New-note-single-page-app-diagram/`
+Directorio del backend:
+
+- part-3
+
+Comandos del backend:
+
+- npm install
+- npm run dev
+- npm start
+- npm run build:ui
+
+Integracion full stack (ejercicio 3.11):
+
+1. Ejecutar npm run build:ui dentro de part-3.
+2. Esto genera el build del frontend de part-2/phonebook y lo copia a part-3/dist.
+3. El backend en part-3/index.js sirve automaticamente los archivos estaticos de dist.

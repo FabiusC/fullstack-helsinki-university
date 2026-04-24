@@ -13,6 +13,10 @@ const App = () => {
     const [successMessage, setSuccessMessage] = useState(null)
     const [errorMessage, setErrorMessage] = useState(null)
 
+    const getBackendErrorMessage = (error, fallbackMessage) => {
+        return error.response?.data?.error || fallbackMessage
+    }
+
     useEffect(() => {
         personService.getAll().then((data) => {
             setPersons(data)
@@ -27,8 +31,10 @@ const App = () => {
             const confirmReplace = window.confirm(
                 `${newName} is already added to phonebook, replace the old number with a new one?`
             )
+
             if (confirmReplace) {
                 const updatedPerson = { ...existingPerson, number: newNumber }
+
                 personService
                     .update(existingPerson.id, updatedPerson)
                     .then((returnedPerson) => {
@@ -40,12 +46,21 @@ const App = () => {
                         setNewName('')
                         setNewNumber('')
                     })
-                    .catch(() => {
-                        setErrorMessage(`Information of ${newName} has already been removed from server`)
+                    .catch((error) => {
+                        setErrorMessage(
+                            getBackendErrorMessage(
+                                error,
+                                `Information of ${newName} has already been removed from server`
+                            )
+                        )
                         setTimeout(() => setErrorMessage(null), 5000)
-                        setPersons(persons.filter((p) => p.id !== existingPerson.id))
+
+                        if (error.response?.status === 404) {
+                            setPersons(persons.filter((p) => p.id !== existingPerson.id))
+                        }
                     })
             }
+
             return
         }
 
@@ -63,8 +78,8 @@ const App = () => {
                 setNewName('')
                 setNewNumber('')
             })
-            .catch(() => {
-                setErrorMessage('Error adding person')
+            .catch((error) => {
+                setErrorMessage(getBackendErrorMessage(error, 'Error adding person'))
                 setTimeout(() => setErrorMessage(null), 5000)
             })
     }
